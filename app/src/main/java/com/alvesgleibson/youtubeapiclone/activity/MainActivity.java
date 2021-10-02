@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.alvesgleibson.youtubeapiclone.R;
 import com.alvesgleibson.youtubeapiclone.adapter.AdapterVideos;
 import com.alvesgleibson.youtubeapiclone.model.Videos;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Videos> videosLista = new ArrayList<>();
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerVideos);
+        searchView = findViewById(R.id.searchView);
+
         recyclerView.setHasFixedSize( true );
 
         //Configurar Layout
@@ -40,6 +47,34 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Youtube");
         setSupportActionBar( toolbar );
 
+        searchViewMethods();
+
+    }
+
+    private void searchViewMethods() {
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+            }
+        });
     }
 
     public void recuperarVideo(){
@@ -62,10 +97,16 @@ public class MainActivity extends AppCompatActivity {
 
         videosLista.add( videos3 );
 
-
-
-
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.searchMenu);
+        searchView.setMenuItem( item );
+        return  true;
+
+    }
 }
