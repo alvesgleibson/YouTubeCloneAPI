@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Videos> videosLista = new ArrayList<>();
     private MaterialSearchView searchView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
