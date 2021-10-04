@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitConfig {
 
-    public static Retrofit getRetrofit(String url){
+    public static Retrofit getRetrofit(){
         return new Retrofit.Builder().baseUrl(YouTubeConfig.URL_BASE).addConverterFactory(GsonConverterFactory.create()).build();
     }
 
