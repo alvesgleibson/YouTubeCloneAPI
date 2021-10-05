@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alvesgleibson.youtubeapiclone.R;
 import com.alvesgleibson.youtubeapiclone.model.Items;
-import com.alvesgleibson.youtubeapiclone.model.Videos;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.List;
@@ -41,8 +41,10 @@ public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.MyViewHold
 
        Items videos = videosLista.get( position );
 
-       //holder.capa.setImageResource(videos.getCapa());
        holder.titulo.setText(videos.snippet.title);
+       String url = videos.snippet.thumbnails.high.url;
+
+       Picasso.get().load(url).into(holder.capa);
 
     }
 
