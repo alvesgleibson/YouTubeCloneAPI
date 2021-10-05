@@ -1,6 +1,7 @@
 package com.alvesgleibson.youtubeapiclone.api;
 
-import com.alvesgleibson.youtubeapiclone.model.ResultadoYoutube;
+import com.alvesgleibson.youtubeapiclone.model.Resultado;
+
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,7 +23,7 @@ public interface YoutubeService {
     * */
 
     @GET("search")
-    Call<ResultadoYoutube>recuperarVideos(
+    Call<Resultado>recuperarVideos(
             @Query("part") String part,
             @Query("order") String order,
             @Query("maxResults") String maxResults,

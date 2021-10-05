@@ -16,10 +16,12 @@ import com.alvesgleibson.youtubeapiclone.adapter.AdapterVideos;
 import com.alvesgleibson.youtubeapiclone.api.YoutubeService;
 import com.alvesgleibson.youtubeapiclone.helper.RetrofitConfig;
 import com.alvesgleibson.youtubeapiclone.helper.YouTubeConfig;
-import com.alvesgleibson.youtubeapiclone.model.ResultadoYoutube;
+import com.alvesgleibson.youtubeapiclone.model.Items;
+import com.alvesgleibson.youtubeapiclone.model.Resultado;
 import com.alvesgleibson.youtubeapiclone.model.Videos;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +33,11 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private List<Videos> videosLista = new ArrayList<>();
+    private List<Items> videosListaItem = new ArrayList<>();
     private MaterialSearchView searchView;
     private Retrofit retrofit;
+
+    private  Resultado resultado;
 
 
     @Override
@@ -44,18 +48,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerVideos);
         searchView = findViewById(R.id.searchView);
 
-        recyclerView.setHasFixedSize( true );
 
-        //Configurar Layout
-        recyclerView.setLayoutManager( new LinearLayoutManager(this));
 
         //Configuração Iniciais Retrofit
         retrofit = RetrofitConfig.getRetrofit();
 
 
-        //Configurar o Adapter
+        //Recuperar Video
         recuperarVideo();
-        recyclerView.setAdapter( new AdapterVideos( videosLista, this ));
+
 
         //Setando a ToolBar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         searchViewMethods();
 
     }
+
 
     //Metodos da Lib SeachView
     private void searchViewMethods() {
@@ -97,45 +99,39 @@ public class MainActivity extends AppCompatActivity {
 
         YoutubeService youtubeService = retrofit.create( YoutubeService.class);
 
-        /* Forma Antiga
-
-        Call<ResultadoYoutube> call = youtubeService.recuperarVideos("","","","","");
-        call.enqueue(new Callback<ResultadoYoutube>() {
-            @Override
-            public void onResponse(Call<ResultadoYoutube> call, Response<ResultadoYoutube> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResultadoYoutube> call, Throwable t) {
-
-            }
-        });
-
-
-        * */
-
         //Nova Forma
         youtubeService.recuperarVideos("snippet","date","20",
-                YouTubeConfig.CHAVE_API_YOUTUBE,YouTubeConfig.CANAL_ID).enqueue(new Callback<ResultadoYoutube>() {
+                YouTubeConfig.CHAVE_API_YOUTUBE,YouTubeConfig.CANAL_ID).enqueue(new Callback<Resultado>() {
             @Override
-            public void onResponse(Call<ResultadoYoutube> call, Response<ResultadoYoutube> response) {
+            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+
 
                 if (response.isSuccessful()){
-                    if (response.code() == 200){
-                        Log.d("RespostasPositiva", "RespostasPositiva: "+response.toString());
-                    }else Log.d("RespostaasNegativa", "RespostasNegativa: "+response.toString());
+
+                    resultado = response.body();
+                    videosListaItem = resultado.items;
+                    recuperarRecyclerView();
                 }
-
-
 
             }
 
             @Override
-            public void onFailure(Call<ResultadoYoutube> call, Throwable t) {
+            public void onFailure(Call<Resultado> call, Throwable t) {
 
             }
+
+
         });
+
+
+
+    }
+
+    private void recuperarRecyclerView() {
+
+        recyclerView.setHasFixedSize( true );
+        recyclerView.setLayoutManager( new LinearLayoutManager(this));
+        recyclerView.setAdapter( new AdapterVideos( videosListaItem, this ));
 
     }
 

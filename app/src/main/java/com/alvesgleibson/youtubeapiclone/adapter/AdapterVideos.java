@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alvesgleibson.youtubeapiclone.R;
+import com.alvesgleibson.youtubeapiclone.model.Items;
 import com.alvesgleibson.youtubeapiclone.model.Videos;
 
 
@@ -20,10 +21,10 @@ import java.util.List;
 
 public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.MyViewHolder> {
 
-    private List<Videos> videosLista;
+    private List<Items> videosLista;
     private Context context;
 
-    public AdapterVideos(List<Videos> videosLista, Context context) {
+    public AdapterVideos(List<Items> videosLista, Context context) {
         this.videosLista = videosLista;
         this.context = context;
     }
@@ -38,10 +39,10 @@ public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-       Videos videos = videosLista.get( position );
+       Items videos = videosLista.get( position );
 
        //holder.capa.setImageResource(videos.getCapa());
-       holder.titulo.setText(videos.getTitulo());
+       holder.titulo.setText(videos.snippet.title);
 
     }
 
