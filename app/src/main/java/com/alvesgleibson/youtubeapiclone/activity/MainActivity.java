@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Setando a ToolBar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Youtube");
+        toolbar.setTitle("Luiz do Som");
         setSupportActionBar( toolbar );
 
         searchViewMethods();
@@ -145,7 +146,14 @@ public class MainActivity extends AppCompatActivity {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Toast.makeText(MainActivity.this, "Clique "+position, Toast.LENGTH_SHORT).show();
+
+                                Items item = videosListaItem.get( position );
+                                String idVideo = item.id.videoId;
+
+                                Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+                                intent.putExtra("idVideo", idVideo);
+                                startActivity(intent);
+
                             }
 
                             @Override
