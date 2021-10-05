@@ -17,6 +17,7 @@ public interface YoutubeService {
         &maxResults=20
         &key=AIzaSyCxpJVunnsI7Xx_7hk-QGSGZ0R9S5A5YPg
         &channelId=UCFJvAGjel1N2QWyOu50pNeQ
+        &q=desenvolvimento android
 
         https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&maxResults=20&key=AIzaSyCxpJVunnsI7Xx_7hk-QGSGZ0R9S5A5YPg&channelId=UCFJvAGjel1N2QWyOu50pNeQ
 
@@ -28,8 +29,11 @@ public interface YoutubeService {
             @Query("order") String order,
             @Query("maxResults") String maxResults,
             @Query("key") String key,
-            @Query("channelId") String channelId
+            @Query("channelId") String channelId,
+            @Query("q") String q
 
 
     );
+
+
 }
