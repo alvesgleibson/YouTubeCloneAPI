@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.alvesgleibson.youtubeapiclone.R;
 import com.alvesgleibson.youtubeapiclone.adapter.AdapterVideos;
 import com.alvesgleibson.youtubeapiclone.api.YoutubeService;
 import com.alvesgleibson.youtubeapiclone.helper.RetrofitConfig;
 import com.alvesgleibson.youtubeapiclone.helper.YouTubeConfig;
+import com.alvesgleibson.youtubeapiclone.listener.RecyclerItemClickListener;
 import com.alvesgleibson.youtubeapiclone.model.Items;
 import com.alvesgleibson.youtubeapiclone.model.Resultado;
 import com.alvesgleibson.youtubeapiclone.model.Videos;
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     resultado = response.body();
                     videosListaItem = resultado.items;
                     recuperarRecyclerView();
+
                 }
 
             }
@@ -119,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<Resultado> call, Throwable t) {
 
             }
-
 
         });
 
@@ -132,6 +136,29 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize( true );
         recyclerView.setLayoutManager( new LinearLayoutManager(this));
         recyclerView.setAdapter( new AdapterVideos( videosListaItem, this ));
+
+        //Configurar evento de Clique
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerView,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Toast.makeText(MainActivity.this, "Clique "+position, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                Toast.makeText(MainActivity.this, "Clique Longo", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Toast.makeText(MainActivity.this, "Clique no id "+i, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                ));
 
     }
 
